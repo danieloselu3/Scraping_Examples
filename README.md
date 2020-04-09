@@ -9,3 +9,12 @@ Hacker News is a popular aggregator of news articles that “hackers”(computer
 2. ## Scraping Hacker News API ##
 Here, instead of scraping the site, we obtain the data from the api provided by the site administrator.
 In web scraping, the unwritten rule is to always start with an API, only when there is too much of rate limiting, or when there is no well written API do we settle on scraping the site.
+
+3. ## Scraping Quotes to Scrape ##
+We’re going to scrape http://quotes.toscrape.com, using requests and Beautiful Soup.
+This page is provided by Scrapinghub as a more realistic scraping playground. Take some time to explore the page.
+We’ll scrape out all the information, 
+that is:
+•	 The quotes, with their author and tags;
+•	 And the author information, that is, date and place of birth, and
+description.
