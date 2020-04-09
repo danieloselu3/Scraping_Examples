@@ -6,24 +6,28 @@ so that we can use a database just like we would with a CSV or JSON file
 to quickly store some information.
 
 ## Target cell 1
-    <div class="quote" itemscope itemtype="http://schema.org/CreativeWork">
+    <div class="col-md-8">
+        <div class="quote" itemscope itemtype="http://schema.org/CreativeWork">
 
-        <span class="text" itemprop="text">“The world as we have created it is a process of our thinking. It cannot be changed without changing our thinking”</span>
+            <span class="text" itemprop="text">“The world as we have created it is a process of our thinking. It cannot be changed without changing our thinking”</span>
 
-        <span>by 
-            <small class="author" itemprop="author">Albert Einstein</small>
-            <a href="/author/Albert-Einstein">(about)</a>
-        </span>
+            <span>by 
+                <small class="author" itemprop="author">Albert Einstein</small>
+                <a href="/author/Albert-Einstein">(about)</a>
+            </span>
 
-        <div class="tags">
-            Tags:
-            <meta class="keywords" itemprop="keywords" content="change,deep-thoughts,thinking,world"/> 
-            <a class="tag" href="/tag/change/page/1/">change</a>
-            <a class="tag" href="/tag/deep-thoughts/page/1/">deep-thoughts</a>
-            <a class="tag" href="/tag/thinking/page/1/">thinking</a>
-            <a class="tag" href="/tag/world/page/1/">world</a>
+            <div class="tags">
+                Tags:
+                <meta class="keywords" itemprop="keywords" content="change,deep-thoughts,thinking,world"/> 
+                <a class="tag" href="/tag/change/page/1/">change</a>
+                <a class="tag" href="/tag/deep-thoughts/page/1/">deep-thoughts</a>
+                <a class="tag" href="/tag/thinking/page/1/">thinking</a>
+                <a class="tag" href="/tag/world/page/1/">world</a>
+            </div>
+
         </div>
-
+        ......
+        ......
     </div>
 
 
