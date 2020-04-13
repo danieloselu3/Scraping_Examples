@@ -51,6 +51,7 @@ def getQuotes(url):
     except AttributeError as e:
         return None
 
+    # next page functionality
     if next_url is not None:
         next_page_to_scrape = base_url + next_url
         getQuotes(next_page_to_scrape)
