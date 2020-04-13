@@ -45,7 +45,7 @@ def getQuotes(url):
 
         Author_Link_Holder.add(link_to_author_description)
     
-    # catcch any attribute error thrown by bs4 incase our target is empty
+    # catch any attribute error thrown by bs4 incase our target is empty
     try:
         next_url = bsObj.find('li', {'class':'next'}).find('a')['href']
     except AttributeError as e:
@@ -68,6 +68,21 @@ def getQuotes(url):
 # for i in Author_Link_Holder:
 #     print(i)
 #     print("-----")
+
+
+# Second Method (getAuthorInfo)
+def getAuthorInfo():
+    for author_link in Author_Link_Holder:
+        author_target_page = base_url + author_link
+        print(author_target_page)
+
+        # html = session.get(author_target_page)
+        # bsObj = BeautifulSoup(html, 'lxml')
+
+        # author_name = bsObj.find
+
+getQuotes("http://quotes.toscrape.com")
+getAuthorInfo()
 
 
 
