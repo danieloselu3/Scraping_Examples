@@ -48,6 +48,18 @@ to quickly store some information.
             In 1879, Albert Einstein was born in Ulm, Germany. He completed his Ph.D. at the University of Zurich by 1909. His 1905 paper explaining the photoelectric effect, the basis of electronics, earned him the Nobel Prize in 1921. His first paper on Special Relativity Theory, also published in 1905, changed the world. After the rise of the Nazi party, Einstein made Princeton his permanent home, becoming a U...............
         </div>
     </div>
+    
+
+## Getting to the next page
+    <nav>
+        <ul class="pager">
+            
+            <li class="next">
+                <a href="/page/2/">Next <span aria-hidden="true">&rarr;</span></a>
+            </li>
+            
+        </ul>
+    </nav>
 
 From Target Cell 1, we'll otain the followin data:
 - Quote
