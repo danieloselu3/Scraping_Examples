@@ -72,17 +72,37 @@ def getQuotes(url):
 
 # Second Method (getAuthorInfo)
 def getAuthorInfo():
+    """ Scapes the Authors information """
+    # Loop over the global Author_Link_Holder list, 
+    # that will be populated by the getQuotes Method
     for author_link in Author_Link_Holder:
+        # concatenate a link to the author's page
         author_target_page = base_url + author_link
-        print(author_target_page)
 
-        # html = session.get(author_target_page)
-        # bsObj = BeautifulSoup(html, 'lxml')
+        # get the authors page and create a beautiful soup object
+        html = session.get(author_target_page)
+        bsObj = BeautifulSoup(html.text, 'lxml')
 
-        # author_name = bsObj.find
+        # extract the required data
+        author_name = bsObj.find('h3', {'class':'author-title'}).get_text()
+        author_date_of_birth = bsObj.find('span', {'class':'author-born-date'}).get_text()
+        author_place_of_birth = bsObj.find('span', {'class':'author-born-location'}).get_text()
+        author_description = bsObj.find('div', {'class':'author-description'}).get_text()
 
-getQuotes("http://quotes.toscrape.com")
-getAuthorInfo()
+        # append the data into the global Author_Description_Holder
+        Author_Description_Holder.append({
+            'Author':author_name,
+            'Date of Birth':author_date_of_birth,
+            'Place of Birth':author_place_of_birth,
+            'Author description':author_description
+        })
+
+# getQuotes("http://quotes.toscrape.com")
+# getAuthorInfo()
+# for i in Author_Description_Holder[:5]:
+#     print(i)
+#     print('------')
+
 
 
 
