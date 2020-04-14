@@ -80,8 +80,17 @@ def getAuthorInfo():
         author_target_page = base_url + author_link
 
         # get the authors page and create a beautiful soup object
-        html = session.get(author_target_page)
-        bsObj = BeautifulSoup(html.text, 'lxml')
+        # catch any error from the server
+        try:
+            html = session.get(author_target_page)
+        except HTTPError as e:
+            return None
+
+        # catch any attribute error
+        try:
+            bsObj = BeautifulSoup(html.text, 'lxml')
+        except AttributeError as e:
+            return None
 
         # extract the required data
         author_name = bsObj.find('h3', {'class':'author-title'}).get_text()
