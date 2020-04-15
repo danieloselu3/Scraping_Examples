@@ -18,3 +18,15 @@ that is:
 •	 The quotes, with their author and tags;
 •	 And the author information, that is, date and place of birth, and
 description.
+
+4. ## Scraping Books to Scrape ##
+We’re going to scrape http://books.toscrape.com, using requests and Beautiful Soup.
+This page is provided by Scrapinghub as a more realistic scraping playground. 
+Take some time to explore the page. We’ll scrape out all the information,
+that is, for every book, we’ll obtain:
+•	 Its title;
+•	 Its image;
+•	 Its price and stock availability;
+•	 Its rating;
+•	 Its product description;
+•	 Other product information.
