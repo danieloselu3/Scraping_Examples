@@ -1,10 +1,3 @@
-We’ll store our data in a SQLite database.
-We’re going to use the “dataset” library (see https://dataset.readthedocs.io/en/latest/). 
-This library provides a simple abstraction layer removing most direct 
-SQL statements without the necessity for a full ORM model,
-so that we can use a database just like we would with a CSV or JSON file 
-to quickly store some information.
-
 ## Target cell 1
     <div class="col-md-8">
         <div class="quote" itemscope itemtype="http://schema.org/CreativeWork">
@@ -67,7 +60,8 @@ From Target Cell 1, we'll otain the followin data:
 - Tags
 - Link to the Author Info
 
-We'll then use the link to Author info from target cell 1
-to get the followin info:
+From Target Cell 2, we'll otain the followin data:
 - Date and place of birth of the Author
 - Description of the Author
+
+we'll then save the data in  csv files
