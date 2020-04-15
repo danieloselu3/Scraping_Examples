@@ -33,8 +33,8 @@ def getQuotes(url):
         return None
 
     for target_cell in bsObj.select('div.quote'):
-        quote = target_cell.find('span', {'class':'text'}).get_text()
-        author_of_quote = target_cell.find('small', {'class':'author'}).get_text()
+        quote = target_cell.find('span', {'class':'text'}).get_text(strip=True)
+        author_of_quote = target_cell.find('small', {'class':'author'}).get_text(strip=True)
         quote_tags = target_cell.find('meta', {'class':'keywords'})['content']
         link_to_author_description = target_cell.find('a')['href']
 
@@ -95,10 +95,10 @@ def getAuthorInfo():
             return None
 
         # extract the required data
-        author_name = bsObj.find('h3', {'class':'author-title'}).get_text()
-        author_date_of_birth = bsObj.find('span', {'class':'author-born-date'}).get_text()
-        author_place_of_birth = bsObj.find('span', {'class':'author-born-location'}).get_text()
-        author_description = bsObj.find('div', {'class':'author-description'}).get_text()
+        author_name = bsObj.find('h3', {'class':'author-title'}).get_text(strip=True)
+        author_date_of_birth = bsObj.find('span', {'class':'author-born-date'}).get_text(strip=True)
+        author_place_of_birth = bsObj.find('span', {'class':'author-born-location'}).get_text(strip=True)
+        author_description = bsObj.find('div', {'class':'author-description'}).get_text(strip=True)
 
         # append the data into the global Author_Description_Holder
         Author_Description_Holder.append({
