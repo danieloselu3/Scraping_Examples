@@ -1,5 +1,6 @@
 # imports
 import requests
+import csv
 from bs4 import BeautifulSoup
 from urllib.error import HTTPError
 
@@ -22,13 +23,13 @@ def getQuotes(url):
     # try catching any error from the server
     try:
         html = session.get(url)
-    except HTTPError as e:
+    except HTTPError:
         return None
 
     # catch any errors by the page parser
     try:
         bsObj = BeautifulSoup(html.text, 'lxml')
-    except AttributeError as e:
+    except AttributeError:
         return None
 
     for target_cell in bsObj.select('div.quote'):
@@ -48,7 +49,7 @@ def getQuotes(url):
     # catch any attribute error thrown by bs4 incase our target is empty
     try:
         next_url = bsObj.find('li', {'class':'next'}).find('a')['href']
-    except AttributeError as e:
+    except AttributeError:
         return None
 
     # next page functionality
@@ -83,13 +84,13 @@ def getAuthorInfo():
         # catch any error from the server
         try:
             html = session.get(author_target_page)
-        except HTTPError as e:
+        except HTTPError:
             return None
 
         # catch any attribute error
         try:
             bsObj = BeautifulSoup(html.text, 'lxml')
-        except AttributeError as e:
+        except AttributeError:
             return None
 
         # extract the required data
@@ -103,15 +104,47 @@ def getAuthorInfo():
             'Author':author_name,
             'Date of Birth':author_date_of_birth,
             'Place of Birth':author_place_of_birth,
-            'Author description':author_description
+            'Author Description':author_description
         })
 
 # getQuotes("http://quotes.toscrape.com")
 # getAuthorInfo()
-# for i in Author_Description_Holder[:5]:
+# for i in Author_Description_Holder[:3]:
 #     print(i)
 #     print('------')
 
 
+def saveData():
+    # Save Quotes Scraped
+
+    # save in a variable the names of your columns
+    columns = ['Quote', 'Author', 'Tags']
+    try:
+        with open('Quotes_to_Scrape.csv', 'w') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=columns)
+            writer.writeheader()
+            for quote in Quotes_Holder:
+                writer.writerow(quote)
+    except IOError:
+        return None
+    print('Quote data saved!')
+
+    # Save Author info scraped
+    author_columns = ['Author', 'Date of Birth', 'Place of Birth', 'Author Description']
+    try:
+        with open('Author_info.csv', 'w') as authorfile:
+            writer = csv.DictWriter(authorfile, fieldnames=author_columns)
+            writer.writeheader()
+            for info in Author_Description_Holder:
+                writer.writerow(info)
+    except IOError:
+        return None
+    print('Author information saved!')
 
 
+
+
+
+getQuotes("http://quotes.toscrape.com")
+getAuthorInfo()
+saveData()
