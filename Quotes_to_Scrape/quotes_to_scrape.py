@@ -59,6 +59,7 @@ def getQuotes(url):
     else:
         print('no more pages to scrape')
 
+# TEST OUR getQuotes METHOD
 
 # getQuotes("http://quotes.toscrape.com")
 # print(len(Quotes_Holder))
@@ -66,7 +67,7 @@ def getQuotes(url):
 #     print(i)
 #     print("-----")
 # print(len(Author_Link_Holder))
-# for i in Author_Link_Holder:
+# for i in Author_Link_Holder[:5]:
 #     print(i)
 #     print("-----")
 
@@ -107,6 +108,8 @@ def getAuthorInfo():
             'Author Description':author_description
         })
 
+# TEST OUR getAuthorInfo METHOD
+
 # getQuotes("http://quotes.toscrape.com")
 # getAuthorInfo()
 # for i in Author_Description_Holder[:3]:
@@ -143,7 +146,7 @@ def saveData():
 
 
 
-
+# Obtain the data from the website
 
 getQuotes("http://quotes.toscrape.com")
 getAuthorInfo()
