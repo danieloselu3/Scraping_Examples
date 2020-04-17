@@ -111,3 +111,19 @@
         <td>0</td>
     </tr>
 </table>
+
+
+## Next Page Target Cell
+
+<div>
+    <ul class="pager">
+        <li class="current">
+            Page 1 of 50
+        </li>
+        <li class="next">
+            <a href="catalogue/page-2.html">
+            next
+            </a>
+        </li>
+    </ul>
+</div>
