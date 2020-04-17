@@ -1,6 +1,7 @@
 # imports
 import requests
 import csv
+import time
 from urllib.error import HTTPError
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
@@ -17,14 +18,17 @@ base_url = "http://books.toscrape.com/"
 Books_Links_Holder = []
 Book_Info_Holder = []
 
+page_number = 1
 
 # First method (gets alinks to the books)
-def getBooksLinks():
+def getBooksLinks(url):
     """ This method retrieves all the links to the books on a particular page  """
     
+    global page_number
+
     # Try catch any errors from the server
     try:
-        html = session.get(base_url, headers=headers)
+        html = session.get(url, headers=headers)
     except HTTPError:
         return None
     
@@ -46,8 +50,30 @@ def getBooksLinks():
             "Link":book_page
         })
 
-# Test our method
-# getBooksLinks()
-# for book in Books_Links_Holder[:5]:
-#     print(book)
+    # print the page currently bein scraped
+    print("Now Scraping {}".format(url))
+
+    # get the next page
+    # http://books.toscrape.com/catalogue/page-2.html
+    # next_page_link = bsObj.find('li', {'class':'next'}).find('a')['href']
+    if page_number < 3 :
+        page_number += 1
+        next_page = "http://books.toscrape.com/catalogue/page-" + str(page_number) + ".html"
+    
+    # wait half a second before scrapin the next page
+    time.sleep(.5)
+    
+    try:
+        # scrape the next page
+        getBooksLinks(next_page)
+    except UnboundLocalError:
+        return None
+
+
+# # Test our method
+# getBooksLinks(base_url)
+# print('We managed to scrape {} book links including:'.format(len(Books_Links_Holder)))
+# for link in Books_Links_Holder:
+#     print('Link to :: {} ==> {}'.format(link['Title'], link['Link']))
 #     print("-----------")
+
