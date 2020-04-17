@@ -13,6 +13,7 @@ headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KH
 
 # Sites base url
 base_url = "http://books.toscrape.com/"
+base_item_url = "http://books.toscrape.com/catalogue/"
 
 # Temporary Data Holders
 Books_Links_Holder = []
@@ -20,7 +21,15 @@ Book_Info_Holder = []
 
 page_number = 1
 
-# First method (gets alinks to the books)
+# clean url(ensures all our urls are standard and the same)
+def cleanUrl(scrapedurl):
+    split_url = scrapedurl.split('/')
+    new_clean_url = "/".join(split_url[-2:])
+    new_url = urljoin(base_item_url, new_clean_url)
+    return new_url
+    
+
+# First method (gets links to the books)
 def getBooksLinks(url):
     """ This method retrieves all the links to the books on a particular page  """
     
@@ -41,7 +50,7 @@ def getBooksLinks(url):
     # loop over the target cells and get all the required details
     for target_cell in bsObj.select('article.product_pod'):
         book_title = target_cell.find('h3').find('a')['title']
-        book_link = target_cell.find('h3').find('a')['href']
+        book_link = cleanUrl(target_cell.find('h3').find('a')['href'])
         book_page = urljoin(base_url, book_link)
 
         # send the extracted data into our temporary data holder
@@ -54,13 +63,11 @@ def getBooksLinks(url):
     print("Now Scraping {}".format(url))
 
     # get the next page
-    # http://books.toscrape.com/catalogue/page-2.html
-    # next_page_link = bsObj.find('li', {'class':'next'}).find('a')['href']
     if page_number < 3 :
         page_number += 1
         next_page = "http://books.toscrape.com/catalogue/page-" + str(page_number) + ".html"
     
-    # wait half a second before scrapin the next page
+    # wait half a second before scraping the next page
     time.sleep(.5)
     
     try:
@@ -77,3 +84,51 @@ def getBooksLinks(url):
 #     print('Link to :: {} ==> {}'.format(link['Title'], link['Link']))
 #     print("-----------")
 
+
+# Second link (extracts the data from the pages)
+def getBookData():
+    for link in Books_Links_Holder:
+        try:
+            html = session.get(link['Link'])
+        except HTTPError:
+            return None
+
+        try:
+            bsObj = BeautifulSoup(html.text, 'lxml')
+        except AttributeError:
+            return None
+
+        book_title = bsObj.find('div', {'class':'product_main'}).find('h1').get_text(strip=True)
+        book_price = bsObj.find('div', {'class':'product_main'}).find('p', {'class':'price_color'}).get_text(strip=True)
+        # book_image_link
+        # book_stock_availability
+        book_rating = bsObj.find('div', {'class':'product_main'}).find('p', {'class':'star-rating'})['class']
+        book_product_description = bsObj.find_next_sibling('div', {'id':'product_desription'})
+        book_other_product_info = []
+
+        # for table_row in bsObj.find('table', {'class':'table'}).findall('tr'):
+        for table_row in bsObj.find('table', {'class':'table'}).select('tr'):
+            column_title = table_row.find('th').get_text(strip=True)
+            column_info = table_row.find('td').get_text(strip=True)
+
+            book_other_product_info.append({
+                'name':column_title,
+                'info':column_info
+            })
+        
+        Book_Info_Holder.append({
+            'title':book_title,
+            'price':book_price,
+            'rating':book_rating,
+            'product info':book_product_description,
+            'other product info':book_other_product_info
+        })
+
+
+# Test our method
+getBooksLinks(base_url)
+print('We managed to scrape {} book links including:'.format(len(Books_Links_Holder)))
+getBookData()
+for i in Book_Info_Holder[:5]:
+    print(i)
+    print("------")
