@@ -21,12 +21,25 @@ Book_Info_Holder = []
 
 page_number = 1
 
-# clean url(ensures all our urls are standard and the same)
+# clean book url(ensures all our urls are standard and the same)
+# a-light-in-the-attic_1000/index.html
 def cleanUrl(scrapedurl):
     split_url = scrapedurl.split('/')
-    new_clean_url = "/".join(split_url[-2:])
-    new_url = urljoin(base_item_url, new_clean_url)
+    if len(split_url) <= 3:
+        new_clean_url = "/".join(split_url[-2:])
+        new_url = urljoin(base_item_url, new_clean_url)
+    else:
+        new_clean_url = "/".join(split_url[-5:])
+        new_url = urljoin(base_url, new_clean_url)
     return new_url
+
+# clean image url(ensures all our urls are standard and the same)
+# media/cache/1c/88/1c8807c42be085f3b061fe63f62a3c39.jpg
+# def cleanImageUrl(scrapedlink):
+#     split_url = scrapedlink.split('/')
+#     new_clean_url = "/".join(split_url[-5:])
+#     new_url = urljoin(base_url, new_clean_url)
+#     return new_url
     
 
 # First method (gets links to the books)
@@ -87,39 +100,51 @@ def getBooksLinks(url):
 
 # Second link (extracts the data from the pages)
 def getBookData():
+    """ Scrapes data from a single book page """
+    # Loop over the list of links
     for link in Books_Links_Holder:
+
+        # try catching any server response error
         try:
             html = session.get(link['Link'])
         except HTTPError:
             return None
 
+        # catch any parsing errors
         try:
             bsObj = BeautifulSoup(html.text, 'lxml')
         except AttributeError:
             return None
+        
+        # print out the page currently eing scraped
+        print("Now Scraping {}".format(link['Link']))
 
+        # scrape thhe need info
         book_title = bsObj.find('div', {'class':'product_main'}).find('h1').get_text(strip=True)
         book_price = bsObj.find('div', {'class':'product_main'}).find('p', {'class':'price_color'}).get_text(strip=True)
-        # book_image_link
+        book_image_link = cleanUrl(bsObj.find('div', {'class':'item'}).find('img')['src'])
         # book_stock_availability
         book_rating = bsObj.find('div', {'class':'product_main'}).find('p', {'class':'star-rating'})['class']
-        book_product_description = bsObj.find_next_sibling('div', {'id':'product_desription'})
+        book_product_description = bsObj.find(id='product_description').find_next_sibling('p').get_text(strip=True)
         book_other_product_info = []
 
-        # for table_row in bsObj.find('table', {'class':'table'}).findall('tr'):
+        # get the table info
         for table_row in bsObj.find('table', {'class':'table'}).select('tr'):
             column_title = table_row.find('th').get_text(strip=True)
             column_info = table_row.find('td').get_text(strip=True)
 
+            # save it inside the product info data holder
             book_other_product_info.append({
                 'name':column_title,
                 'info':column_info
             })
         
+        # send al the scraped info into the Book_Info_Holder
         Book_Info_Holder.append({
             'title':book_title,
             'price':book_price,
-            'rating':book_rating,
+            'rating':book_rating[1],
+            'image link':book_image_link,
             'product info':book_product_description,
             'other product info':book_other_product_info
         })
@@ -127,7 +152,7 @@ def getBookData():
 
 # Test our method
 getBooksLinks(base_url)
-print('We managed to scrape {} book links including:'.format(len(Books_Links_Holder)))
+print('We managed to scrape {} book links :'.format(len(Books_Links_Holder)))
 getBookData()
 for i in Book_Info_Holder[:5]:
     print(i)
