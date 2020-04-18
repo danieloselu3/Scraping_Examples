@@ -1,6 +1,5 @@
 # imports
 import requests
-import csv
 import time
 from urllib.error import HTTPError
 from urllib.parse import urljoin
@@ -22,7 +21,6 @@ Book_Info_Holder = []
 page_number = 1
 
 # clean book url(ensures all our urls are standard and the same)
-# a-light-in-the-attic_1000/index.html
 def cleanUrl(scrapedurl):
     split_url = scrapedurl.split('/')
     if len(split_url) <= 3:
@@ -32,14 +30,6 @@ def cleanUrl(scrapedurl):
         new_clean_url = "/".join(split_url[-5:])
         new_url = urljoin(base_url, new_clean_url)
     return new_url
-
-# clean image url(ensures all our urls are standard and the same)
-# media/cache/1c/88/1c8807c42be085f3b061fe63f62a3c39.jpg
-# def cleanImageUrl(scrapedlink):
-#     split_url = scrapedlink.split('/')
-#     new_clean_url = "/".join(split_url[-5:])
-#     new_url = urljoin(base_url, new_clean_url)
-#     return new_url
     
 
 # First method (gets links to the books)
@@ -150,10 +140,10 @@ def getBookData():
         })
 
 
-# Test our method
-getBooksLinks(base_url)
-print('We managed to scrape {} book links :'.format(len(Books_Links_Holder)))
-getBookData()
-for i in Book_Info_Holder[:5]:
-    print(i)
-    print("------")
+# # Test our method
+# getBooksLinks(base_url)
+# print('We managed to scrape {} book links :'.format(len(Books_Links_Holder)))
+# getBookData()
+# for i in Book_Info_Holder[:5]:
+#     print(i)
+#     print("------")
