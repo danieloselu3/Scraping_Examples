@@ -133,7 +133,7 @@ def getBookData():
         # send al the scraped info into the Book_Info_Holder
         Book_Info_Holder.append({
             'Title':book_title,
-            'Price':book_price[1:],
+            'Price':book_price,
             'Rating':book_rating[1],
             'Image Link':book_image_link,
             'Product Info':book_product_description,
