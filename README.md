@@ -25,7 +25,7 @@ This page is provided by Scrapinghub as a more realistic scraping playground.
 Take some time to explore the page. We’ll scrape out all the information,
 that is, for every book, we’ll obtain:
 •	 Its title;
-•	 Its image;
+•	 Its image(url);
 •	 Its price and stock availability;
 •	 Its rating;
 •	 Its product description;
