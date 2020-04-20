@@ -1,5 +1,6 @@
 # imports
 import requests
+import csv
 import time
 from urllib.error import HTTPError
 from urllib.parse import urljoin
@@ -66,7 +67,7 @@ def getBooksLinks(url):
     print("Now Scraping {}".format(url))
 
     # get the next page
-    if page_number < 3 :
+    if page_number < 5 :
         page_number += 1
         next_page = "http://books.toscrape.com/catalogue/page-" + str(page_number) + ".html"
     
@@ -131,12 +132,12 @@ def getBookData():
         
         # send al the scraped info into the Book_Info_Holder
         Book_Info_Holder.append({
-            'title':book_title,
-            'price':book_price,
-            'rating':book_rating[1],
-            'image link':book_image_link,
-            'product info':book_product_description,
-            'other product info':book_other_product_info
+            'Title':book_title,
+            'Price':book_price[1:],
+            'Rating':book_rating[1],
+            'Image Link':book_image_link,
+            'Product Info':book_product_description,
+            'Product Other Info':book_other_product_info
         })
 
 
@@ -147,3 +148,26 @@ def getBookData():
 # for i in Book_Info_Holder[:5]:
 #     print(i)
 #     print("------")
+
+def saveData():
+    columns = ["Title", "Price", "Rating", "Image Link", "Product Info", "Product Other Info"]
+
+    try:
+        with open('Books_to_Scrape.csv', 'w') as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=columns)
+            writer.writeheader()
+            for data in Book_Info_Holder:
+                writer.writerow(data)
+    except IOError:
+        return None
+    print("Book info saved!")
+
+
+# Test our method
+getBooksLinks(base_url)
+print('We managed to scrape {} books :'.format(len(Books_Links_Holder)))
+getBookData()
+for i in Book_Info_Holder[:5]:
+    print(i)
+    print("------")
+saveData()
