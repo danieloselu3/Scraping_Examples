@@ -163,11 +163,11 @@ def saveData():
     print("Book info saved!")
 
 
-# Test our method
-getBooksLinks(base_url)
-print('We managed to scrape {} books :'.format(len(Books_Links_Holder)))
-getBookData()
-for i in Book_Info_Holder[:5]:
-    print(i)
-    print("------")
-saveData()
+# # Test our method
+# getBooksLinks(base_url)
+# print('We managed to scrape {} books :'.format(len(Books_Links_Holder)))
+# getBookData()
+# for i in Book_Info_Holder[:5]:
+#     print(i)
+#     print("------")
+# saveData()
