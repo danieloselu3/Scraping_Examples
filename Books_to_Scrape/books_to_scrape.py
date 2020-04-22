@@ -4,6 +4,7 @@ import csv
 import time
 from urllib.error import HTTPError
 from urllib.parse import urljoin
+from urllib.request import urlretrieve
 from bs4 import BeautifulSoup
 
 # Handle headers
@@ -31,6 +32,14 @@ def cleanUrl(scrapedurl):
         new_clean_url = "/".join(split_url[-5:])
         new_url = urljoin(base_url, new_clean_url)
     return new_url
+
+# download images
+def downLoadImage(imageurl, filename):
+    image_name = filename.replace(' ', '-') + '.jpg'
+    image_location = '/home/daniel/Projects/webscraping/webscraping_using_python/Scraping_Examples/Books_to_Scrape/book_images/' + image_name
+    urlretrieve(imageurl, image_location)
+    return image_location
+
     
 
 # First method (gets links to the books)
@@ -113,7 +122,7 @@ def getBookData():
         # scrape thhe need info
         book_title = bsObj.find('div', {'class':'product_main'}).find('h1').get_text(strip=True)
         book_price = bsObj.find('div', {'class':'product_main'}).find('p', {'class':'price_color'}).get_text(strip=True)
-        book_image_link = cleanUrl(bsObj.find('div', {'class':'item'}).find('img')['src'])
+        book_image_path = downLoadImage(cleanUrl(bsObj.find('div', {'class':'item'}).find('img')['src']), book_title)
         # book_stock_availability
         book_rating = bsObj.find('div', {'class':'product_main'}).find('p', {'class':'star-rating'})['class']
         book_product_description = bsObj.find(id='product_description').find_next_sibling('p').get_text(strip=True)
@@ -135,7 +144,7 @@ def getBookData():
             'Title':book_title,
             'Price':book_price,
             'Rating':book_rating[1],
-            'Image Link':book_image_link,
+            'Image Link':book_image_path,
             'Product Info':book_product_description,
             'Product Other Info':book_other_product_info
         })
@@ -163,11 +172,11 @@ def saveData():
     print("Book info saved!")
 
 
-# # Test our method
-# getBooksLinks(base_url)
-# print('We managed to scrape {} books :'.format(len(Books_Links_Holder)))
-# getBookData()
-# for i in Book_Info_Holder[:5]:
-#     print(i)
-#     print("------")
-# saveData()
+# Test our method
+getBooksLinks(base_url)
+print('We managed to scrape {} books :'.format(len(Books_Links_Holder)))
+getBookData()
+for i in Book_Info_Holder[:5]:
+    print(i)
+    print("------")
+saveData()
