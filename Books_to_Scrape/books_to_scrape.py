@@ -1,6 +1,6 @@
 # imports
 import requests
-import csv
+import csv 
 import time
 from urllib.error import HTTPError
 from urllib.parse import urljoin
@@ -36,7 +36,7 @@ def cleanUrl(scrapedurl):
 # download images
 def downLoadImage(imageurl, filename):
     image_name = filename.replace(' ', '-') + '.jpg'
-    image_location = '/home/daniel/Projects/webscraping/webscraping_using_python/Scraping_Examples/Books_to_Scrape/book_images/' + image_name
+    image_location = './book_images/' + image_name
     urlretrieve(imageurl, image_location)
     return image_location
 
@@ -76,7 +76,7 @@ def getBooksLinks(url):
     print("Now Scraping {}".format(url))
 
     # get the next page
-    if page_number < 5 :
+    if page_number < 3 :
         page_number += 1
         next_page = "http://books.toscrape.com/catalogue/page-" + str(page_number) + ".html"
     
@@ -138,13 +138,13 @@ def getBookData():
                 'name':column_title,
                 'info':column_info
             })
-        
+
         # send al the scraped info into the Book_Info_Holder
         Book_Info_Holder.append({
             'Title':book_title,
             'Price':book_price,
             'Rating':book_rating[1],
-            'Image Link':book_image_path,
+            'Image Path':book_image_path,
             'Product Info':book_product_description,
             'Product Other Info':book_other_product_info
         })
@@ -159,7 +159,7 @@ def getBookData():
 #     print("------")
 
 def saveData():
-    columns = ["Title", "Price", "Rating", "Image Link", "Product Info", "Product Other Info"]
+    columns = ["Title", "Price", "Rating", "Image Path", "Product Info", "Product Other Info"]
 
     try:
         with open('Books_to_Scrape.csv', 'w') as csvfile:
